@@ -5,6 +5,7 @@
 
 #include "blatt4.h"
 
+// BEISPIELE
 int n1 = 3;
 double A1[] = {  2, 1,  1, 
                  4, 2, -1, 
@@ -21,9 +22,11 @@ double A2[] = {  1,  0,  2,  0,  3,
 double b2[] = {1, -1, 1, -1, 1};
 int pi2[] = {2, 1, 4, 3, 0};
 
-// TESTING
+typedef double* mat;
+typedef double* vec;
 
-double *matMult(double const *A, double const *B, int const l, int const m, int const n)
+// TESTING
+mat matMult(mat const A, mat const B, int const l, int const m, int const n)
 {
     double *res = (double*)malloc(l*n*sizeof(double));
     for (int i=0; i<l; ++i)
@@ -40,9 +43,9 @@ double *matMult(double const *A, double const *B, int const l, int const m, int 
     return res;
 }
 
-double *matVec(double const *A, double const *x, int const n)
+vec matVec(mat const A, vec const x, int const n)
 {
-    double *y = (double*)malloc(n * sizeof(double));
+    vec y = (vec)malloc(n * sizeof(double));
     for (int i=0; i<n; ++i)
     {
         y[i] = 0;
@@ -55,7 +58,7 @@ double *matVec(double const *A, double const *x, int const n)
 }
 
 // OUTPUT
-void printMat(double const *A, int const m, int const n)
+void printMat(mat const A, int const m, int const n)
 {
     for (int i=0; i<n; ++i)
     {
@@ -69,10 +72,10 @@ void printMat(double const *A, int const m, int const n)
 
 int main(void)
 {
-    double *A = A2;
-    double *b = b2;
+    mat A = A2;
+    vec b = b2;
     int n = n2;
     int *pi = pi2;
-    
+
     return 0;
 }
