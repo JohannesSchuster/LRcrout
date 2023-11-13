@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "vector.h"
+#include "matrix.h"
 #include "blatt4.h"
 
 // BEISPIELE
@@ -22,27 +24,7 @@ double A2[] = {  1,  0,  2,  0,  3,
 double b2[] = {1, -1, 1, -1, 1};
 int pi2[] = {2, 1, 4, 3, 0};
 
-typedef double* mat;
-typedef double* vec;
-
 // TESTING
-mat matMult(mat const A, mat const B, int const l, int const m, int const n)
-{
-    double *res = (double*)malloc(l*n*sizeof(double));
-    for (int i=0; i<l; ++i)
-    {
-        for (int k=0; k<n; ++k)
-        {
-            res[i*n+k] = 0;
-            for (int j=0; j<m; ++j)
-            {
-                res[i*n+k] += A[i*m+j] * B[j*n+k];
-            }
-        }
-    }
-    return res;
-}
-
 vec matVec(mat const A, vec const x, int const n)
 {
     vec y = (vec)malloc(n * sizeof(double));
