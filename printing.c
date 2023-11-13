@@ -11,9 +11,9 @@ void vec_print(vec const a, int const n)
 
 void mat_print(mat const a, int const m, int const n)
 {
-    for (int i=0; i<n; ++i)
+    for (int i=0; i<m; ++i)
     {
-        vec_print(a+i*m, m);
+        vec_print(a+i*n, n);
         printf("\n");
     }
 }

@@ -3,10 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "vector.h"
-#include "matrix.h"
+#include "linalg.h"
+
 #include "printing.h"
-#include "blatt4.h"
 
 // BEISPIELE
 int n1 = 3;
@@ -24,21 +23,6 @@ double A2[] = {  1,  0,  2,  0,  3,
                  2, -1,  3,  0,  9};
 double b2[] = {1, -1, 1, -1, 1};
 int pi2[] = {2, 1, 4, 3, 0};
-
-// TESTING
-vec matVec(mat const A, vec const x, int const n)
-{
-    vec y = (vec)malloc(n * sizeof(double));
-    for (int i=0; i<n; ++i)
-    {
-        y[i] = 0;
-        for (int j=0; j<n; ++j)
-        {
-            y[i] += A[i*n+j] * x[j];
-        } 
-    }
-    return y;
-}
 
 int main(void)
 {
