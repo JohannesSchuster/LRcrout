@@ -5,6 +5,7 @@
 
 #include "vector.h"
 #include "matrix.h"
+#include "printing.h"
 #include "blatt4.h"
 
 // BEISPIELE
@@ -37,19 +38,6 @@ vec matVec(mat const A, vec const x, int const n)
         } 
     }
     return y;
-}
-
-// OUTPUT
-void printMat(mat const A, int const m, int const n)
-{
-    for (int i=0; i<n; ++i)
-    {
-        for (int j=0; j<m; ++j)
-        {
-            printf("%1.2lf ", A[i*m+j]);
-        }
-        printf("\n");
-    }
 }
 
 int main(void)
