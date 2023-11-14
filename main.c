@@ -28,8 +28,16 @@ int main(void)
 {
     mat A = A2;
     vec b = b2;
+    ivec pi = pi2;
     int n = n2;
-    int *pi = pi2;
+
+    mat_print(A, n, n);
+    printf("\n");
+    mat Aperm = mat_copy(A, n, n);
+    mat_permute_lines(Aperm, pi, n, n);
+    mat_print(Aperm, n, n);
+
+    free(Aperm);
 
     return 0;
 }
