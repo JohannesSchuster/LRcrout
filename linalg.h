@@ -5,5 +5,6 @@
 #include "linalg/matrix.h"
 #include "linalg/matvec.h"
 #include "linalg/solver.h"
+#include "linalg/utils.h"
 
 #endif
