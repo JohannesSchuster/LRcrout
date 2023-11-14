@@ -1,7 +1,7 @@
 #include "blatt4.h"
 
 // LR Zerlegung in place, also wird die matrix A überschrieben
-void **LRcroutCopy(double *A, int const n)
+void LRcrout(double *A, int const n)
 {
 }
 
