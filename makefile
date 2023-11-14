@@ -6,13 +6,13 @@ ODIR=obj
 LIBS=-lm
 
 SOURCES = $(wildcard *.c) $(wildcard **/*.c)
-OBJ = $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
+OBJ = $(patsubst %.c,$(ODIR)/%.out,$(SOURCES))
 
-$(ODIR)/%.o: %.c	
+$(ODIR)/%.out: %.c	
 	@mkdir -p $(@D)
 	@$(CC) -c -o $@ $< $(CFLAGS)
 
-proj: $(OBJ)
+proj.out: $(OBJ)
 	@$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
