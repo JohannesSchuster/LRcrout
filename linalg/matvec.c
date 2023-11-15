@@ -1,4 +1,5 @@
 #include "matvec.h"
+#include "utils.h"
 
 mat mat_diag(vec const d, int const m, int const n)
 {
