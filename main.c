@@ -29,18 +29,29 @@ int main(void)
     vec b = b2;
     ivec pi = pi2;
     int n = n2;
+    double eps = 1e-16;
 
     mat_print(A, n, n);
     printf("\n");
-    mat Aperm = mat_copy(A, n, n);
-    mat_permute_lines(Aperm, pi, n, n);
-    mat_print(Aperm, n, n);
+
+    mat ALR = mat_copy(A, n, n);
+    lrInp(ALR, n, eps);
+    mat_print(ALR, n, n);
     printf("\n");
 
-    lrInp(Aperm, n, 1e-12);
-    mat_print(Aperm, n, n);
+    void **LR = lr(A, n, eps);
+    mat L = (mat)get(LR, 0);
+    mat R = (mat)get(LR, 1);
 
-    free(Aperm);
+    mat_print(L, n, n);
+    printf("\n");
+
+    mat_print(R, n, n);
+    printf("\n");
+
+    free(L);
+    free(R);
+    free(LR);
 
     return 0;
 }

@@ -2,9 +2,10 @@
 
 #include "../utils.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 //Normal LR decomposition
-void lrInp(mat A, int const n, double const eps)
+int lrInp(mat A, int const n, double const eps)
 {
     // Decomposing matrix into Upper and Lower
     // triangular matrix
@@ -62,7 +63,11 @@ void **lr(mat const A, int const n, double const eps)
     mat R = mat_copy(A, n, n);
 
     //Do LR factorization on the copy O(n3)
-    lrInp(R, n, eps);
+    if (lrInp(R, n, eps) == 0)
+    {
+        free(R);
+        return NULL;
+    }
     mat L = mat_identity(n, n);
 
     //Split the matrices O(n2)
