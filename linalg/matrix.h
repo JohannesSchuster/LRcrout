@@ -17,5 +17,6 @@ mat mat_add(mat const a, mat const b, int const m, int const n);
 mat mat_sub(mat const a, mat const b, int const m, int const n);
 mat mat_mult(mat const a, mat const b, int const l, int const m, int const n);
 
+mat mat_trans(mat const a, int const m, int const n);
 
 #endif // LINALG_MATRIX_H

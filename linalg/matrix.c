@@ -80,3 +80,16 @@ mat mat_mult(mat const a, mat const b, int const l, int const m, int const n)
     }
     return res;
 }
+
+mat mat_trans(mat const a, int const m, int const n)
+{
+    mat trans = mat_alloc(n,m);
+    for (int i=0; i<m; ++i)
+    {
+        for (int j=0; j<n; ++j)
+        {
+            trans[j*m+i] = a[i*n+j];
+        }
+    }
+    return trans;
+}
