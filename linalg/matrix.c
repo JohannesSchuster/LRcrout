@@ -18,7 +18,7 @@ mat mat_zero(int const m, int const n)
 mat mat_identity(int const m, int const n)
 {
     mat res = mat_zero(m, n);
-    for (int i = 0; i<min(m,n); ++i) res[i*m+i] = 1;
+    for (int i = 0; i<imin(m,n); ++i) res[i*m+i] = 1;
     return res;
 }
 

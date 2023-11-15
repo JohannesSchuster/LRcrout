@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "linalg.h"
-
 #include "printing.h"
 
 // BEISPIELE
@@ -35,6 +34,10 @@ int main(void)
     printf("\n");
     mat Aperm = mat_copy(A, n, n);
     mat_permute_lines(Aperm, pi, n, n);
+    mat_print(Aperm, n, n);
+    printf("\n");
+
+    lrInp(Aperm, n, 1e-12);
     mat_print(Aperm, n, n);
 
     free(Aperm);

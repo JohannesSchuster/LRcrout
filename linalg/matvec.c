@@ -1,5 +1,15 @@
 #include "matvec.h"
 
+mat mat_diag(vec const d, int const m, int const n)
+{
+    mat res = mat_zero(m, n);
+    for (int i=0; i<imin(m,n); ++i)
+    {
+        res[i*m+i] = d[i];
+    }
+    return res;
+}
+
 vec mat_vec_mult(mat const A, vec const b, int const m, int const n)
 {
     vec res = vec_zero(m);
