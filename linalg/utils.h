@@ -10,6 +10,6 @@ double dmax(double const a, double const b);
 double dabs(double const a);
 
 void **bind(int const n, ...);
-void *get(void **elem, int const n);
+void *getls(void **elem, int const n);
 
 #endif // UTILS_H

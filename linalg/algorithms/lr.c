@@ -1,7 +1,7 @@
 #include "lr.h"
 
 #include "../utils.h"
-#include <stdio.h>
+#include "../defines.h"
 #include <stdlib.h>
 
 //Normal LR decomposition
@@ -34,15 +34,15 @@ int lrInp(mat A, int const n, double const eps)
             }
             if (dabs(A[i*n+i]) < eps)
             {
-                printf("LR: Pivot element %i too small (%lf), aborted!\n", i+1, A[i*n+i]);
-                return 0;
+                //Pivot element too small
+                return i;
             }
 
             // Evaluating L(k, i)
             A[j*n+i] = (A[i*n+j] - sum) / A[i*n+i];
         }
     }
-    return 1;
+    return SUCCESS;
 }
 
 //LR decomposition with row permutation 
@@ -95,8 +95,7 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
         if (dabs(A[k*n+k]) < eps)
         {
             //If too small A is singular
-            printf("LR: Pivot element %i too small (%lf), aborted!\n", k+1, A[k*n+k]);
-            return 0;
+            return k;
         }
 
         for (int i=k+1; i<n; ++i)
@@ -110,7 +109,7 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
         }
     }
 
-    return 1;
+    return SUCCESS;
 }
 
 //LR decomposition with line permutation
@@ -163,8 +162,7 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
         if (dabs(A[k*n+k]) < eps)
         {
             //If too small A is singular
-            printf("LR: Pivot element %i too small (%lf), aborted!\n", k+1, A[k*n+k]);
-            return 0;
+            return k;
         }
 
         for (int i=k+1; i<n; ++i)
@@ -178,7 +176,7 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
         }
     }
 
-    return 1;
+    return SUCCESS;
 }
 
 //LR decomposition but don't override A
@@ -188,7 +186,7 @@ void **lr(mat const A, int const n, double const eps)
     mat R = mat_copy(A, n, n);
 
     //Do LR factorization on the copy O(n3)
-    if (lrInp(R, n, eps) == 0)
+    if (lrInp(R, n, eps) != SUCCESS)
     {
         free(R);
         return NULL;
@@ -214,7 +212,7 @@ void **lr_pivot_lines(mat const A, int const n, double const eps)
     mat R = mat_copy(A, n, n);
     ivec p = (ivec)malloc((n+1)*sizeof(int));
 
-    if (lr_pivot_linesInp(R, p, n, eps) == 0)
+    if (lr_pivot_linesInp(R, p, n, eps) != SUCCESS)
     {
         free(R);
         free(p);
@@ -234,5 +232,31 @@ void **lr_pivot_lines(mat const A, int const n, double const eps)
     }
 
     return bind(3, L, R, p);
+}
 
+void **lr_pivot_cols(mat const A, int const n, double const eps)
+{
+    mat R = mat_copy(A, n, n);
+    ivec p = (ivec)malloc((n+1)*sizeof(int));
+
+    if (lr_pivot_colsInp(R, p, n, eps) != SUCCESS)
+    {
+        free(R);
+        free(p);
+        return NULL;
+    }
+
+    mat L = mat_identity(n, n);
+
+    //Split the matrices O(n2)
+    for (int i=0; i<n; ++i)
+    {
+        for (int j=0; j<i; ++j)
+        {
+            L[i*n+j] = R[i*n+j];
+            R[i*n+j] = 0;
+        }
+    }
+
+    return bind(3, L, R, p);
 }

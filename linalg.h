@@ -7,5 +7,6 @@
 #include "linalg/matvec.h"
 #include "linalg/solver.h"
 #include "linalg/utils.h"
+#include "linalg/defines.h"
 
 #endif

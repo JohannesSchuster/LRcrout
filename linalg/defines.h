@@ -1,0 +1,6 @@
+#ifndef LINALG_DEFINES_H
+#define LINALG_DEFINES_H
+
+#define SUCCESS -1
+
+#endif // LINALG_DEFINES_H
