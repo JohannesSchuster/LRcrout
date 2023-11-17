@@ -5,18 +5,18 @@
 #include <stdlib.h>
 
 //Normal LR decomposition
-int lrInp(mat A, int const n, double const eps)
+idx lrInp(mat A, size const n, double const eps)
 {
     // Decomposing matrix into Upper and Lower
     // triangular matrix
-    for (int i = 1; i < n; ++i) 
+    for (idx i = 1; i < n; ++i) 
     {
         // Upper Triangular
-        for (int j = i; j < n; ++j)
+        for (idx j = i; j < n; ++j)
         {
             // Summation of L(i, j) * U(j, k)
             double sum = 0;
-            for (int k = 0; k < i-1; ++k)
+            for (idx k = 0; k < i-1; ++k)
             {
                 sum += (A[i*n+k] * A[k*n+j]);
             }
@@ -24,15 +24,15 @@ int lrInp(mat A, int const n, double const eps)
         }
  
         // Lower Triangular
-        for (int j = i+1; j < n; ++j) 
+        for (idx j = i+1; j < n; ++j) 
         {
             // Summation of L(k, j) * U(j, i)
             double sum = 0;
-            for (int k = 1; k < i-1; ++k)
+            for (idx k = 1; k < i-1; ++k)
             {
                 sum += (A[i*n+k] * A[k*n+j]);
             }
-            if (dabs(A[i*n+i]) < eps)
+            if (vabs(A[i*n+i]) < eps)
             {
                 //Pivot element too small
                 return i;
@@ -46,10 +46,10 @@ int lrInp(mat A, int const n, double const eps)
 }
 
 //LR decomposition with row permutation 
-int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
+idx lr_pivot_colsInp(mat A, ivec pi, size const n, double const eps)
 {
     //Initialize p
-    for (int i=0; i<n; ++i) 
+    for (idx i=0; i<n; ++i) 
     {
         pi[i] = i;
     }
@@ -57,13 +57,13 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
     //Store the number of transpositions in pi[n]
     pi[n] = 0;
 
-    for (int k=0; k<n-1; ++k)
+    for (idx k=0; k<n-1; ++k)
     {
         double max = 0;
-        int p = 0;
-        for (int j=k; j<n; ++j)
+        idx p = 0;
+        for (idx j=k; j<n; ++j)
         {
-            if (dabs(A[j*n+k]) > max)
+            if (vabs(A[j*n+k]) > max)
             {
                 max = A[j*n+k];
                 p = j;
@@ -75,13 +75,13 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
         {
             //swap pi[p] and pi[k]
             {
-                int buff = pi[k];
+                idx buff = pi[k];
                 pi[k] = pi[p];
                 pi[p] = buff;
             }
 
             //swap lines A[p,1:n] and A[k,1:n]
-            for (int j=0; j<n; ++j)
+            for (idx j=0; j<n; ++j)
             {
                 double buff = A[k*n+j];
                 A[k*n+j] = A[p*n+j];
@@ -92,17 +92,17 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
         }
 
         //Check the pivot element, 
-        if (dabs(A[k*n+k]) < eps)
+        if (vabs(A[k*n+k]) < eps)
         {
             //If too small A is singular
             return k;
         }
 
-        for (int i=k+1; i<n; ++i)
+        for (idx i=k+1; i<n; ++i)
         {
             A[i*n+k] /= A[k*n+k];
             double sum = 0;
-            for (int j=k+1; j<n; ++j)
+            for (idx j=k+1; j<n; ++j)
             {
                 A[i*n+j] -= A[i*n+k] * A[k*n+j];
             }
@@ -113,10 +113,10 @@ int lr_pivot_colsInp(mat A, ivec pi, int const n, double const eps)
 }
 
 //LR decomposition with line permutation
-int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
+idx lr_pivot_linesInp(mat A, ivec pi, size const n, double const eps)
 {
     //Initialize p
-    for (int i=0; i<n; ++i) 
+    for (idx i=0; i<n; ++i) 
     {
         pi[i] = i;
     }
@@ -124,13 +124,13 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
     //Store the number of transpositions in pi[n]
     pi[n] = 0;
 
-    for (int k=0; k<n-1; ++k)
+    for (idx k=0; k<n-1; ++k)
     {
         double max = 0;
-        int p = 0;
-        for (int j=k; j<n; ++j)
+        idx p = 0;
+        for (idx j=k; j<n; ++j)
         {
-            if (dabs(A[k*n+j]) > max)
+            if (vabs(A[k*n+j]) > max)
             {
                 max = A[k*n+j];
                 p = j;
@@ -142,13 +142,13 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
         {
             //swap pi[p] and pi[k]
             {
-                int buff = pi[k];
+                idx buff = pi[k];
                 pi[k] = pi[p];
                 pi[p] = buff;
             }
 
             //swap cols A[1:n,p] and A[1:n,p]
-            for (int j=0; j<n; ++j)
+            for (idx j=0; j<n; ++j)
             {
                 double buff = A[j*n+k];
                 A[j*n+k] = A[j*n+p];
@@ -159,17 +159,17 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
         }
 
         //Check the pivot element, 
-        if (dabs(A[k*n+k]) < eps)
+        if (vabs(A[k*n+k]) < eps)
         {
             //If too small A is singular
             return k;
         }
 
-        for (int i=k+1; i<n; ++i)
+        for (idx i=k+1; i<n; ++i)
         {
             A[k*n+i] /= A[k*n+k];
             double sum = 0;
-            for (int j=k+1; j<n; ++j)
+            for (idx j=k+1; j<n; ++j)
             {
                 A[i*n+j] -= A[i*n+k] * A[k*n+j];
             }
@@ -180,7 +180,7 @@ int lr_pivot_linesInp(mat A, ivec pi, int const n, double const eps)
 }
 
 //LR decomposition but don't override A
-void **lr(mat const A, int const n, double const eps)
+void **lr(mat const A, size const n, double const eps)
 {
     //Copy A O(n2)
     mat R = mat_copy(A, n, n);
@@ -194,9 +194,9 @@ void **lr(mat const A, int const n, double const eps)
     mat L = mat_identity(n, n);
 
     //Split the matrices O(n2)
-    for (int i=0; i<n; ++i)
+    for (idx i=0; i<n; ++i)
     {
-        for (int j=0; j<i; ++j)
+        for (idx j=0; j<i; ++j)
         {
             L[i*n+j] = R[i*n+j];
             R[i*n+j] = 0;
@@ -207,10 +207,10 @@ void **lr(mat const A, int const n, double const eps)
     return bind(2, L, R);
 }
 
-void **lr_pivot_lines(mat const A, int const n, double const eps)
+void **lr_pivot_lines(mat const A, size const n, double const eps)
 {
     mat R = mat_copy(A, n, n);
-    ivec p = (ivec)malloc((n+1)*sizeof(int));
+    ivec p = (ivec)malloc((n+1)*sizeof(idx));
 
     if (lr_pivot_linesInp(R, p, n, eps) != SUCCESS)
     {
@@ -222,9 +222,9 @@ void **lr_pivot_lines(mat const A, int const n, double const eps)
     mat L = mat_identity(n, n);
 
     //Split the matrices O(n2)
-    for (int i=0; i<n; ++i)
+    for (idx i=0; i<n; ++i)
     {
-        for (int j=0; j<i; ++j)
+        for (idx j=0; j<i; ++j)
         {
             L[i*n+j] = R[i*n+j];
             R[i*n+j] = 0;
@@ -234,10 +234,10 @@ void **lr_pivot_lines(mat const A, int const n, double const eps)
     return bind(3, L, R, p);
 }
 
-void **lr_pivot_cols(mat const A, int const n, double const eps)
+void **lr_pivot_cols(mat const A, size const n, double const eps)
 {
     mat R = mat_copy(A, n, n);
-    ivec p = (ivec)malloc((n+1)*sizeof(int));
+    ivec p = (ivec)malloc((n+1)*sizeof(idx));
 
     if (lr_pivot_colsInp(R, p, n, eps) != SUCCESS)
     {
@@ -249,9 +249,9 @@ void **lr_pivot_cols(mat const A, int const n, double const eps)
     mat L = mat_identity(n, n);
 
     //Split the matrices O(n2)
-    for (int i=0; i<n; ++i)
+    for (idx i=0; i<n; ++i)
     {
-        for (int j=0; j<i; ++j)
+        for (idx j=0; j<i; ++j)
         {
             L[i*n+j] = R[i*n+j];
             R[i*n+j] = 0;

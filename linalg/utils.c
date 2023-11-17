@@ -3,12 +3,12 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-int imin(int const a, int const b)
+size smin(size const a, size const b)
 {
     return (a < b ? a : b);
 }
 
-int imax(int const a, int const b)
+size smax(size const a, size const b)
 {
     return (a > b ? a : b);
 }
@@ -18,27 +18,27 @@ int iabs(int const a)
     return (a < 0 ? -a : a);
 }
 
-double dmin(double const a, double const b)
+value vmin(value const a, value const b)
 {
     return (a < b ? a : b);
 }
 
-double dmax(double const a, double const b)
+value vmax(value const a, value const b)
 {
     return (a > b ? a : b);
 }
 
-double dabs(double const a)
+value vabs(value const a)
 {
     return (a < 0 ? -a : a);
 }
 
-void **bind(int const n, ...)
+void **bind(size const n, ...)
 {
     void **ret = (void**)malloc(n*sizeof(void*));
     va_list args;
     va_start(args, n);
-    for (int i=0; i<n; ++i)
+    for (idx i=0; i<n; ++i)
     {
         ret[i] = va_arg(args, void*);
     }
@@ -46,7 +46,7 @@ void **bind(int const n, ...)
     return ret;
 }
 
-void *get(void **elem, int const n)
+void *get(void **elem, idx const n)
 {
     return elem[n];
 }

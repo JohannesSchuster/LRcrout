@@ -1,15 +1,17 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-int imin(int const a, int const b);
-int imax(int const a, int const b);
+#include "defines.h"
+
+size smin(size const a, size const b);
+size smax(size const a, size const b);
 int iabs(int const a);
 
-double dmin(double const a, double const b);
-double dmax(double const a, double const b);
-double dabs(double const a);
+value vmin(value const a, value const b);
+value vmax(value const a, value const b);
+value vabs(value const a);
 
-void **bind(int const n, ...);
-void *getls(void **elem, int const n);
+void **bind(size const n, ...);
+void *get(void **elem, idx const n);
 
 #endif // UTILS_H
