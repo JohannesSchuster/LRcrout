@@ -1,6 +1,9 @@
 #include "vorruecksub.h"
 #include "../matvec.h"
 
+#include "../utils.h"
+#include <stdlib.h>
+
 void vwsubInp(mat const L, vec b, size const n)
 {
     //Calculate x s.t. L*x=b, where L is a lower triangular matrix
@@ -64,7 +67,7 @@ vec rwsub(mat const R, vec const b, size const m, size const n, value const eps)
         value check = 0;
         for (idx j = 0; j < i; ++j)
         {
-            check += L[i*n+j] * x[j];
+            check += R[i*n+j] * x[j];
         }
         if (vabs(check - b[i]) > eps)
         {

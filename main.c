@@ -12,7 +12,7 @@ double A1[] = {  2, 1,  1,
                  4, 2, -1, 
                 -1, 0,  7};
 double b1[] = {1, 2, 3};
-int pi1[] = {1, 2, 0};
+size_t pi1[] = {1, 2, 0, 0};
 
 int n2 = 5;
 double A2[] = {  1,  0,  2,  0,  3,
@@ -21,37 +21,77 @@ double A2[] = {  1,  0,  2,  0,  3,
                  0,  0,  0, -4,  2,
                  2, -1,  3,  0,  9};
 double b2[] = {1, -1, 1, -1, 1};
-int pi2[] = {2, 1, 4, 3, 0};
+size_t pi2[] = {2, 1, 4, 3, 0};
 
 int main(void)
 {
-    mat A = A2;
-    vec b = b2;
-    ivec pi = pi2;
-    int n = n2;
+    mat A = A1;
+    vec b = b1;
+    ivec pi = pi1;
+    int n = n1;
     double eps = 1e-16;
 
-    mat_print(A, n, n);
-    printf("\n");
+    void **LRp = lr_pivot_lines(A, n, eps);
+    if (LRp)
+    {
+        mat_print(A, n, n);
+        printf("\n");
+  
+        mat L = get(LRp, 0);
+        mat R = get(LRp, 1);
+        ivec p = get(LRp, 2);
 
-    mat ALR = mat_copy(A, n, n);
-    lrInp(ALR, n, eps);
-    mat_print(ALR, n, n);
-    printf("\n");
+        ivec_print(p, n);
+        printf("\n");
+  
+        mat_print(L, n, n);
+        printf("\n");
+  
+        mat_print(R, n, n);
+        printf("\n");
 
-    void **LR = lr(A, n, eps);
-    mat L = (mat)get(LR, 0);
-    mat R = (mat)get(LR, 1);
+        mat PA = mat_permute_lines(A, p, n, n);
+        mat_print(PA, n, n);
+        printf("\n");
 
-    mat_print(L, n, n);
-    printf("\n");
+        mat Arek = mat_mult(L, R, n, n, n);
+        mat_print(Arek, n, n);
+        printf("\n");
+  
+        free(L);
+        free(R);
+        free(LRp);
+        free(PA);
+        free(Arek);
+    }
 
-    mat_print(R, n, n);
-    printf("\n");
-
-    free(L);
-    free(R);
-    free(LR);
+//    mat PA = mat_permute_lines(A, pi, n, n);
+//    free(pi);
+//    void **LR = lr(PA, n, eps);
+//    if (LR)
+//    {
+//        mat_print(PA, n, n);
+//        printf("\n");
+//
+//        mat L = (mat)get(LR, 0);
+//        mat R = (mat)get(LR, 1);
+//
+//        mat_print(L, n, n);
+//        printf("\n");
+//
+//        mat_print(R, n, n);
+//        printf("\n");
+//
+//        mat Arek = mat_mult(L,R,n,n,n);
+//        mat_print(Arek, n, n);
+//        printf("\n");
+//
+//        free(PA);
+//        free(L);
+//        free(R);
+//        free(LR);
+//        free(Arek);
+//    }
 
     return 0;
 }
