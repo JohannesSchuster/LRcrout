@@ -3,6 +3,7 @@
 
 #include "../defines.h"
 #include "../vector.h"
+#include "../ivector.h"
 #include "../matrix.h"
 
 idx lrInp(mat A, size const n, value const eps);

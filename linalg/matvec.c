@@ -1,12 +1,14 @@
 #include "matvec.h"
 #include "utils.h"
 
+#include <stdlib.h>
+
 mat mat_diag(vec const d, size const m, size const n)
 {
     mat res = mat_zero(m, n);
-    for (idx i=0; i<smin(m,n); ++i)
+    for (idx i=0; i<smin(m, n); ++i)
     {
-        res[i*m+i] = d[i];
+        res[i*n+i] = d[i];
     }
     return res;
 }

@@ -49,6 +49,13 @@ void vec_subInp(vec a, vec const b, size const n)
     for (idx i=0; i<n; ++i) a[i] -= b[i];
 }
 
+void vec_swapInp(vec a, size const n, idx const i, idx const j)
+{
+    value buff = a[i];
+    a[i] = a[j];
+    a[j] = buff;
+}
+
 vec vec_scale(vec const a, value const s, size const n)
 {
     vec res = vec_copy(a, n);
@@ -68,6 +75,13 @@ vec vec_sub(vec const a, vec const b, size const n)
     vec res = vec_copy(a, n);
     vec_subInp(res, b, n);
     return res;
+}
+
+vec vec_swap(vec const a, size const n, idx const i, idx const j)
+{
+    vec ret = vec_copy(a,n);
+    vec_swapInp(a, n, i, j);
+    return ret;
 }
 
 value vec_scalarProd(vec const a, vec const b, size const n)

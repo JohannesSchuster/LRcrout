@@ -43,6 +43,26 @@ void mat_subInp(mat a, mat const b, size const m, size const n)
     for (idx i=0; i<m*n; ++i) a[i] -= b[i];
 }
 
+void mat_swap_lineInp(mat a, size const m, size const n, idx const i, idx const j)
+{
+    for (idx k=0; k<n; ++k)
+    {
+        value buff = a[i*n+k];
+        a[i*n+k] = a[j*n+k];
+        a[j*n+k] = buff;
+    }
+}
+
+void mat_swap_colInp(mat a, size const m, size const n, idx const i, idx const j)
+{
+    for (idx k=0; k<m; ++k)
+    {
+        value buff = a[k*n+i];
+        a[k*n+i] = a[k*n+j];
+        a[k*n+j] = buff;
+    }
+}
+
 mat mat_scale(mat const a, value const s, size const m, size const n)
 {
     mat res = mat_copy(a, m, n);
@@ -92,4 +112,18 @@ mat mat_trans(mat const a, size const m, size const n)
         }
     }
     return trans;
+}
+
+mat mat_swap_line(mat const a, size const m, size const n, idx const i, idx const j)
+{
+    mat ret = mat_copy(a, m, n);
+    mat_swap_lineInp(ret, m, n, i, j);
+    return ret;
+}
+
+mat mat_swap_col(mat const a, size const m, size const n, idx const i, idx const j)
+{
+    mat ret = mat_copy(a, m, n);
+    mat_swap_colInp(ret, m, n, i, j);
+    return ret;
 }
