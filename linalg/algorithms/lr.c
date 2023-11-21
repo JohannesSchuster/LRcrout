@@ -4,18 +4,8 @@
 #include "../defines.h"
 #include <stdlib.h>
 
-idx lr_checked_stepInp(mat A, size const n, idx const i, value const eps)
+idx lr_checked_blockStepInp(mat A, size const n, idx const i, value const eps)
 {
-    for (idx j=i; j<n; ++j)
-    {
-        value sum = 0;
-        for (idx k=0; k<i; ++k)
-        {
-            sum += A[i*n+k] * A[k*n+j];
-        }
-        A[i*n+j] -= sum;
-    }
-
     //Check the pivot element, 
     if (vabs(A[i*n+i]) < eps)
     {
@@ -25,12 +15,11 @@ idx lr_checked_stepInp(mat A, size const n, idx const i, value const eps)
 
     for (idx j=i+1; j<n; ++j)
     {
-        value sum = 0;
-        for (idx k=0; k<i; ++k)
+        A[j*n+i] /= A[i*n+i];
+        for (idx k=i+1; k<n; ++k)
         {
-            sum += A[j*n+k] * A[k*n+i];
+            A[j*n+k] -= A[j*n+i] * A[i*n+k];
         }
-        A[j*n+i] = (A[j*n+i] - sum) / A[i*n+i];
     }
 
     return SUCCESS;
@@ -41,7 +30,7 @@ idx lrInp(mat A, size const n, double const eps)
 {
     for (idx i = 0; i < n; ++i) 
     {
-        idx res = lr_checked_stepInp(A, n, i, eps);
+        idx res = lr_checked_blockStepInp(A, n, i, eps);
         if (res != SUCCESS) 
             return res;
     }
@@ -82,7 +71,7 @@ idx lr_pivot_linesInp(mat A, ivec pi, size const n, double const eps)
             pi[n]++;
         }
 
-        idx res = lr_checked_stepInp(A, n, i, eps);
+        idx res = lr_checked_blockStepInp(A, n, i, eps);
         if (res != SUCCESS) 
             return res;
     }
@@ -124,7 +113,7 @@ idx lr_pivot_colsInp(mat A, ivec pi, size const n, double const eps)
             pi[n]++;
         }
 
-        idx res = lr_checked_stepInp(A, n, i, eps);
+        idx res = lr_checked_blockStepInp(A, n, i, eps);
         if (res != SUCCESS) return res;
     }
 

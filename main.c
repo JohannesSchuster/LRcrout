@@ -41,7 +41,7 @@ int main(void)
         mat R = get(LRp, 1);
         ivec p = get(LRp, 2);
 
-        ivec_print(p, n);
+        ivec_print(p, n+1);
         printf("\n");
   
         mat_print(L, n, n);
@@ -66,7 +66,6 @@ int main(void)
     }
 
 //    mat PA = mat_permute_lines(A, pi, n, n);
-//    free(pi);
 //    void **LR = lr(PA, n, eps);
 //    if (LR)
 //    {
