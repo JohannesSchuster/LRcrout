@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FUNCTIONS
+#define FUNCTIONS_EX2
 
-#ifdef FUNCTIONS
+#ifdef FUNCTIONS_EX1
 
 #include "functions.h"
 
@@ -31,6 +31,143 @@ int main(void)
     double t0 = 0.8;
     double t1 = 0.7;
     double kappa = 0.5;
+    const char filenameNewton[] = "debugNewton.txt";
+    const char filenameFixpoint[] = "debugFixpoint.txt";
+    const char filenameSecant[] = "debugSecant.txt";
+
+    // Fixpoint iteration
+    {
+        FILE *file = fopen(filenameFixpoint, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameFixpoint);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    x - h(%e)=%e}\n", t0, fix(t0));
+        double fp = fixpoint(fix, t0, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("fixpoint iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    x - h(%e)=%e}\n", fp, fix(fp));
+        printf("for debug information, see '%s'\n", filenameFixpoint);
+    }
+
+    // Newton's method
+    {
+        FILE *file = fopen(filenameNewton, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameNewton);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    h(%e)=%e}\n", t0, h(t0));
+        double zero = newton(h, h_prime, t0, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("newton iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("for debug information, see '%s'\n", filenameNewton);
+    }
+
+    // Secant Method
+    {
+        FILE *file = fopen(filenameSecant, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameSecant);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    h(%e)=%e}\n", t0, h(t0));
+        double zero = secant(h, t0, t1, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("secant iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("for debug information, see '%s'\n", filenameSecant);
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef FUNCTIONS_EX2
+
+#include "functions.h"
+
+double h(double t)
+{
+    double t2 = t*t;
+    double t3 = t2*t;    
+    double t4 = t2*t2;
+    return t4 - 7*t3 + 18*t2 - 20*t + 8;
+}
+
+double h_prime(double t)
+{
+    double t2 = t*t;
+    double t3 = t2*t;
+    return 4*t3 - 21*t2 + 36*t - 20;
+}
+
+double fix(double t)
+{
+    return t - h(t);
+}
+
+int main(void)
+{
+    double const eps = 1e-14;
+    int const N = 100;
+    double t0 = 2.2;
+    t0 = 0.9;
+    double t1 = 1.3;
+    double kappa = 0.7;
     const char filenameNewton[] = "debugNewton.txt";
     const char filenameFixpoint[] = "debugFixpoint.txt";
     const char filenameSecant[] = "debugSecant.txt";
