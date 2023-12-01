@@ -46,7 +46,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    x - h(%e)=%e}\n", t0, fix(t0));
+        printf("    x - h(%e)=%e\n", t0, fix(t0));
         double fp = fixpoint(fix, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -63,7 +63,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    x - h(%e)=%e}\n", fp, fix(fp));
+        printf("    x - h(%e)=%e\n", fp, fix(fp));
         printf("for debug information, see '%s'\n", filenameFixpoint);
     }
 
@@ -78,7 +78,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    h(%e)=%e}\n", t0, h(t0));
+        printf("    h(%e)=%e\n", t0, h(t0));
         double zero = newton(h, h_prime, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -95,7 +95,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("    h(%e)=%e\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameNewton);
     }
 
@@ -110,7 +110,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    h(%e)=%e}\n", t0, h(t0));
+        printf("    h(%e)=%e\n", t0, h(t0));
         double zero = secant(h, t0, t1, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -127,7 +127,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("    h(%e)=%e\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameSecant);
     }
 
@@ -183,7 +183,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    x - h(%e)=%e}\n", t0, fix(t0));
+        printf("    x - h(%e)=%e\n", t0, fix(t0));
         double fp = fixpoint(fix, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -200,7 +200,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    x - h(%e)=%e}\n", fp, fix(fp));
+        printf("    x - h(%e)=%e\n", fp, fix(fp));
         printf("for debug information, see '%s'\n", filenameFixpoint);
     }
 
@@ -215,7 +215,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    h(%e)=%e}\n", t0, h(t0));
+        printf("    h(%e)=%e\n", t0, h(t0));
         double zero = newton(h, h_prime, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -232,7 +232,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("    h(%e)=%e\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameNewton);
     }
 
@@ -247,7 +247,7 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    h(%e)=%e}\n", t0, h(t0));
+        printf("    h(%e)=%e\n", t0, h(t0));
         double zero = secant(h, t0, t1, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
@@ -264,7 +264,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    h(%e)=%e}\n", zero, h(zero));
+        printf("    h(%e)=%e\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameSecant);
     }
 
