@@ -2,13 +2,34 @@
 #include "utils.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 mat mat_diag(vec const d, size const m, size const n)
 {
     mat res = mat_zero(m, n);
     for (idx i=0; i<smin(m, n); ++i)
     {
-        res[i*n+i] = d[i];
+        res[i][i] = d[i];
+    }
+    return res;
+}
+
+mat mat_from_vec(vec const a, size const m, size const n)
+{
+    mat res = (mat)malloc(m*sizeof(vec));
+    for (idx i=0; i<m; ++i)
+    {
+        res[i] = a+i*n;
+    }
+    return res;
+}
+
+mat mat_copy_from_vec(vec const a, size const m, size const n)
+{
+    mat res = (mat)malloc(m*sizeof(vec));
+    for (idx i=0; i<m; ++i)
+    {
+        res[i] = vec_copy(a+i*n, n);
     }
     return res;
 }
@@ -20,7 +41,7 @@ vec mat_vec_mult(mat const A, vec const b, size const m, size const n)
     {
         for (idx j=0; j<n; ++j)
         {
-            res[i] += A[i*n+j] * b[j];
+            res[i] += A[i][j] * b[j];
         }
     }
 }
@@ -28,7 +49,7 @@ vec mat_vec_mult(mat const A, vec const b, size const m, size const n)
 void vec_permuteInp(vec a, ivec const p, size const n)
 {
     ivec pi = ivec_copy(p, n);
-    for (idx i=0; i<n; ++i)
+    for (idx i=0; i<n-1; ++i)
     {
         vec_swapInp(a, n, i, pi[i]);
         ivec_swapInp(pi, n, i, pi[i]);
@@ -61,16 +82,28 @@ ivec ivec_permute(ivec const a, ivec const p, size const n)
     return res;
 }
 
+void ivec_invert_permutationInp(ivec a, size const n)
+{
+    ivec pi = ivec_copy(a, n);
+    for (idx i=0; i<n; ++i) a[pi[i]] = i;
+    ivec_free(pi);
+}
+
+
+ivec ívec_invert_permutation(ivec const a, size const n)
+{
+    ivec inv = ivec_alloc(n);
+    ivec_invert_permutationInp(inv, n);
+    return inv;
+}
+
 void mat_permute_linesInp(mat a, ivec const p, size const m, size const n)
 {
-    ivec pi = ivec_copy(p, n);
+    ivec pi = ivec_copy(p, m);
     for (idx i=0; i<m; ++i)
     {
-        if (pi[i] != i)
-        {
-            mat_swap_lineInp(a, m, n, i, pi[i]);
-            ivec_swapInp(pi, n, i, pi[i]);
-        }
+        mat_swap_lineInp(a, m, n, i, pi[i]);
+        ivec_swapInp(pi, m, i, pi[i]);
     }
     free(pi);
 }
@@ -80,11 +113,8 @@ void mat_permute_colsInp(mat a, ivec const p, size const m, size const n)
     ivec pi = ivec_copy(p, n);
     for (idx j=0; j<n-1; ++j)
     {
-        if (pi[j] != j)
-        {
-            mat_swap_colInp(a, m, n, j, p[j]);
-            ivec_swapInp(pi, n, j, pi[j]);
-        }
+        mat_swap_colInp(a, m, n, j, pi[j]);
+        ivec_swapInp(pi, m, j, pi[j]);
     }
     free(pi);
 }
@@ -101,4 +131,10 @@ mat mat_permute_cols(mat const a, ivec const p, size const m, size const n)
     mat perm = mat_copy(a, m, n);
     mat_permute_colsInp(perm, p, m, n);
     return perm;
+}
+
+void mat_free(mat a, size const m)
+{
+    for (idx i=0; i<m; ++i) free(a[i]);
+    free(a);
 }

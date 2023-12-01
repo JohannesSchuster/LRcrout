@@ -12,9 +12,9 @@ void vwsubInp(mat const L, vec b, size const n)
     {
         for (idx j = 0; j < i; ++j)
         {
-            b[i] -= L[i*n+j] * b[j];
+            b[i] -= L[i][j] * b[j];
         }
-        b[i] /= L[i*n+i];
+        b[i] /= L[i][i];
     }
 }
 
@@ -26,9 +26,9 @@ void rwsubInp(mat const R, vec b, size const n)
     {
         for (idx j = i; j < n; ++j)
         {
-            b[i] -= R[i*n+j] * b[j];
+            b[i] -= R[i][j] * b[j];
         }
-        b[i] /= R[i*n+i];
+        b[i] /= R[i][i];
     }
 }
 
@@ -44,7 +44,7 @@ vec vwsub(mat const L, vec const b, size const m, size const n, value const eps)
     {
         for (idx j=0; j<n; ++j)
         {
-            value diff = (L[i*n+j]*x[j]-b[i]);
+            value diff = (L[i][j]*x[j]-b[i]);
             rest += diff*diff;
         }
     }
@@ -67,7 +67,7 @@ vec rwsub(mat const R, vec const b, size const m, size const n, value const eps)
         value check = 0;
         for (idx j = 0; j < i; ++j)
         {
-            check += R[i*n+j] * x[j];
+            check += R[i][j] * x[j];
         }
         if (vabs(check - b[i]) > eps)
         {

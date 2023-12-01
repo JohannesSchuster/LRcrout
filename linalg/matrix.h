@@ -3,6 +3,7 @@
 
 #include "defines.h"
 
+mat mat_alloc_cols(size const m);
 mat mat_alloc(size const m, size const n);
 mat mat_zero(size const m, size const n);
 mat mat_identity(size const m, size const n);
@@ -22,5 +23,7 @@ mat mat_mult(mat const a, mat const b, size const l, size const m, size const n)
 mat mat_trans(mat const a, size const m, size const n);
 mat mat_swap_line(mat const a, size const m, size const n, idx const i, idx const j);
 mat mat_swap_col(mat const a, size const m, size const n, idx const i, idx const j);
+
+void mat_free(mat a, size const m);
 
 #endif // LINALG_MATRIX_H

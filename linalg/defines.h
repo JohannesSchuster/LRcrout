@@ -11,6 +11,6 @@ typedef double value;
 
 typedef value* vec;
 typedef idx* ivec;
-typedef value* mat;
+typedef value** mat;
 
 #endif // LINALG_DEFINES_H

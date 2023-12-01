@@ -95,3 +95,8 @@ ivec ivec_swap(ivec const a, size const n, idx const i, idx const j)
     ivec_swapInp(a, n, i, j);
     return ret;
 }
+
+void ivec_free(ivec a)
+{
+    free(a);
+}

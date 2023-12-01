@@ -23,6 +23,6 @@ void mat_print(mat const a, size const m, size const n)
 {
     for (idx i=0; i<m; ++i)
     {
-        vec_print(a+i*n, n);
+        vec_print(a[i], n);
     }
 }

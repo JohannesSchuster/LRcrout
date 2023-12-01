@@ -3,6 +3,140 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define FUNCTIONS
+
+#ifdef FUNCTIONS
+
+#include "functions.h"
+
+double h(double x)
+{
+    return exp(-0.5 * x);
+}
+
+double fix(double x)
+{
+    return x - h(x);
+}
+
+double fix_derivative(double x)
+{
+    return 1 + 0.5 * h(x);
+}
+
+int main(void)
+{
+    double const eps = 1e-16;
+    int const N = 100;
+    double t0 = 0.8;
+    double t1 = 0.7;
+    double kappa = 0.5;
+    const char filenameNewton[] = "debugNewton.txt";
+    const char filenameFixpoint[] = "debugFixpoint.txt";
+    const char filenameSecant[] = "debugSecant.txt";
+
+    // Fixpoint iteration
+    {
+        FILE *file = fopen(filenameFixpoint, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameFixpoint);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    x-f(%e)=%e}\n", t0, t0-h(t0));
+        double fp = fixpoint(h, t0, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("fixpoint iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    x-f(%e)=%e}\n", fp, fp-h(fp));
+        printf("for debug information, see '%s'\n", filenameFixpoint);
+    }
+
+    // Newton's method
+    {
+        FILE *file = fopen(filenameNewton, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameNewton);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    f(%e)=%e}\n", t0, fix(t0));
+        double zero = newton(fix, fix_derivative, t0, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("newton iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    f(%e)=%e}\n", zero, fix(zero));
+        printf("for debug information, see '%s'\n", filenameNewton);
+    }
+
+    // Secant Method
+    {
+        FILE *file = fopen(filenameSecant, "w");
+        if (!file) 
+        {
+            fprintf(stderr, "No file '%s' could be opened for writing.", filenameSecant);
+            return -1;
+        }
+
+        int flag = 0;
+        int iter = 0;
+        printf("    f(%e)=%e}\n", t0, fix(t0));
+        double zero = secant(fix, t0, t1, &flag, &iter, N, file, kappa, eps);
+        fflush(file);
+        fclose(file);
+        printf("secant iteration ");
+        if (flag == 1)
+        {
+            printf("did not converge after %i iterations\n", iter);
+        }
+        if (flag == 2)
+        {
+            printf("diverged after %i iterations\n", iter);
+        }
+        if (flag == 3)
+        {
+            printf("converged after %i iterations\n", iter);
+        }
+        printf("    f(%e)=%e}\n", zero, fix(zero));
+        printf("for debug information, see '%s'\n", filenameSecant);
+    }
+
+    return 0;
+}
+
+#endif
+
+#ifdef LINALG
 #include "linalg.h"
 #include "printing.h"
 
@@ -25,11 +159,11 @@ size_t pi2[] = {2, 1, 4, 3, 0};
 
 int main(void)
 {
-    mat A = A1;
+    size n = n1;
+    mat A = mat_copy_from_vec(A1, n, n);
     vec b = b1;
     ivec pi = pi1;
-    int n = n1;
-    double eps = 1e-16;
+    value eps = 1e-16;
 
     void **LRp = lr_pivot_lines(A, n, eps);
     if (LRp)
@@ -58,11 +192,11 @@ int main(void)
         mat_print(Arek, n, n);
         printf("\n");
   
-        free(L);
-        free(R);
+        mat_free(L, n);
+        mat_free(R, n);
         free(LRp);
-        free(PA);
-        free(Arek);
+        mat_free(PA, n);
+        mat_free(Arek, n);
     }
 
 //    mat PA = mat_permute_lines(A, pi, n, n);
@@ -94,3 +228,4 @@ int main(void)
 
     return 0;
 }
+#endif

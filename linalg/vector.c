@@ -112,3 +112,8 @@ value vec_dist(vec const a, vec const b, size const n)
 {
     return sqrt(vec_sqrDist(a, b, n));
 }
+
+void vec_free(vec a)
+{
+    free(a);
+}
