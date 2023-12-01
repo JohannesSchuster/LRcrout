@@ -11,17 +11,17 @@
 
 double h(double x)
 {
-    return exp(-0.5 * x);
+    return x - exp(-0.5 * x);
+}
+
+double h_prime(double x)
+{
+    return 1 + 0.5 * exp(-0.5 * x);
 }
 
 double fix(double x)
 {
     return x - h(x);
-}
-
-double fix_derivative(double x)
-{
-    return 1 + 0.5 * h(x);
 }
 
 int main(void)
@@ -46,8 +46,8 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    x-f(%e)=%e}\n", t0, t0-h(t0));
-        double fp = fixpoint(h, t0, &flag, &iter, N, file, kappa, eps);
+        printf("    x - h(%e)=%e}\n", t0, fix(t0));
+        double fp = fixpoint(fix, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
         printf("fixpoint iteration ");
@@ -63,7 +63,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    x-f(%e)=%e}\n", fp, fp-h(fp));
+        printf("    x - h(%e)=%e}\n", fp, fix(fp));
         printf("for debug information, see '%s'\n", filenameFixpoint);
     }
 
@@ -78,8 +78,8 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    f(%e)=%e}\n", t0, fix(t0));
-        double zero = newton(fix, fix_derivative, t0, &flag, &iter, N, file, kappa, eps);
+        printf("    h(%e)=%e}\n", t0, h(t0));
+        double zero = newton(h, h_prime, t0, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
         printf("newton iteration ");
@@ -95,7 +95,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    f(%e)=%e}\n", zero, fix(zero));
+        printf("    h(%e)=%e}\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameNewton);
     }
 
@@ -110,8 +110,8 @@ int main(void)
 
         int flag = 0;
         int iter = 0;
-        printf("    f(%e)=%e}\n", t0, fix(t0));
-        double zero = secant(fix, t0, t1, &flag, &iter, N, file, kappa, eps);
+        printf("    h(%e)=%e}\n", t0, h(t0));
+        double zero = secant(h, t0, t1, &flag, &iter, N, file, kappa, eps);
         fflush(file);
         fclose(file);
         printf("secant iteration ");
@@ -127,7 +127,7 @@ int main(void)
         {
             printf("converged after %i iterations\n", iter);
         }
-        printf("    f(%e)=%e}\n", zero, fix(zero));
+        printf("    h(%e)=%e}\n", zero, h(zero));
         printf("for debug information, see '%s'\n", filenameSecant);
     }
 
